@@ -10,45 +10,35 @@
  */
 class Solution {
 public:
-    ListNode* mergeTwo(ListNode * list1, ListNode * list2){
-        if(!list1 && !list2) return nullptr;
-        if(!list1) return list2;
-        if(!list2) return list1;
-
-        ListNode * head = nullptr;
-        if(list1->val < list2->val){
-            head = list1;
-            list1 = list1->next;
-        } else {
-            head = list2;
-            list2 = list2->next;
-        }
-
-        ListNode * temp = head;
-        while(list1 && list2){
-            if(list1->val < list2->val){
-                temp->next = list1;
-                list1 = list1->next;
-            } else {
-                temp->next = list2;
-                list2 = list2->next;
-            }
-            temp = temp->next;
-        }
-
-        if(list1) temp->next = list1;
-        if(list2) temp->next = list2;
-        return head;
-    }
 
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         int n = lists.size();
-        if(n == 0) return nullptr;
-        if(n == 1) return lists[0];
-        ListNode * head = mergeTwo(lists[0],lists[1]);
-        for(int i = 2; i < n; i++){
-            head = mergeTwo(head, lists[i]);
+        priority_queue<int, vector<int>, greater<int>> pq;
+
+        for(int i = 0; i < n; i++){
+            ListNode * temp = lists[i];
+            while(temp){
+                pq.push(temp->val);
+                temp = temp->next;
+            }
         }
+
+        ListNode * head = nullptr;
+        ListNode * tail = nullptr;
+
+        while(!pq.empty()){
+            ListNode * node = new ListNode(pq.top());
+            pq.pop();
+
+            if(!head){
+                head = node;
+                tail = node;
+            } else{
+                tail->next = node;
+                tail = tail->next;
+            }
+        }
+
         return head;
     }
 };
