@@ -1,7 +1,7 @@
 class Solution {
 public:
-    vector<vector<int>> dp;
-    int solve(string s, string t, int i , int j){
+    vector<vector<long long>> dp;
+    int solve(string & s, string &t, int i , int j){
         if(j >= t.size()){
             return 1;
         }
@@ -17,7 +17,7 @@ public:
     }
 
     int numDistinct(string s, string t) {
-        dp.assign(s.size(), vector<int>(t.size(),-1));
+        dp.assign(s.size(), vector<long long>(t.size(),-1));
         return solve(s, t, 0 , 0);
 
     }
